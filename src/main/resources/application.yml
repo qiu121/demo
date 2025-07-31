@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  #
+  kafka:
+    bootstrap-servers: bcdev2.bitcubic.com:9092  # Kafka?????
+    consumer:
+      group-id: test-group  # ????ID
+      auto-offset-reset: earliest  # ??????????
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false  # ??????offset
+    listener:
+      ack-mode: manual_immediate  # ??????

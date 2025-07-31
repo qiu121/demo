@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+// 指定protobuf包名，防止类名重复
+package com.miluo.framework.websocket.proto;
+
+// 生成的文件存放在哪个包下
+option java_package = "com.miluo.framework.websocket.proto";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message StatusMessage {
+  google.protobuf.Timestamp insert_date = 1;
+  repeated google.protobuf.Struct status_list = 2;
+}
