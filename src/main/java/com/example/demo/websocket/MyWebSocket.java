@@ -1,5 +1,6 @@
 package com.example.demo.websocket;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.util.MultiValueMap;
@@ -8,8 +9,10 @@ import org.yeauty.pojo.Session;
 
 import java.io.IOException;
 import java.util.Map;
+import com.example.demo.protobuf.MessageProto.Message;
 
-@ServerEndpoint(path = "/ws/{arg}")
+
+@ServerEndpoint(path = "/ws/{arg}",port = "8080")
 public class MyWebSocket {
 
     @BeforeHandshake
@@ -45,10 +48,30 @@ public class MyWebSocket {
 
     @OnBinary
     public void onBinary(Session session, byte[] bytes) {
-        for (byte b : bytes) {
-            System.out.println(b);
+        try {
+            // 解析接收到的二进制数据
+            Message receivedMessage = Message.parseFrom(bytes);
+
+
+            // 处理消息内容
+            System.out.println("Content: " + receivedMessage.getContent());
+            System.out.println("ID: " + receivedMessage.getId());
+            System.out.println("Tags: " + receivedMessage.getTagsList());
+
+            // 创建响应消息
+            Message responseMessage = Message.newBuilder()
+                    .setContent("Server response: " + receivedMessage.getContent())
+                    .setId(receivedMessage.getId() + 1)
+                    .addTags("server_processed")
+                    .build();
+
+            // 发送响应
+            session.sendBinary(responseMessage.toByteArray());
+
+        } catch (InvalidProtocolBufferException e) {
+            System.err.println("Failed to parse protobuf message: " + e.getMessage());
+            session.close();
         }
-        session.sendBinary(bytes);
     }
 
     @OnEvent

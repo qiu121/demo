@@ -1,0 +1,10 @@
+syntax = "proto3";
+package com.example.demo.protobuf;
+
+option java_outer_classname = "MessageProto";
+
+message Message {
+  string content = 1;
+  int32 id = 2;
+  repeated string tags = 3;
+}
