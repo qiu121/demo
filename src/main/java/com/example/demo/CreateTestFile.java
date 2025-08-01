@@ -19,7 +19,7 @@ public class CreateTestFile {
         byte[] bytes = message.toByteArray();
 
         // 保存为二进制文件
-        try (FileOutputStream output = new FileOutputStream("src/main/message.bin")) {
+        try (FileOutputStream output = new FileOutputStream("src/main/proto/message.bin")) {
             output.write(bytes);
         }
 

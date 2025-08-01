@@ -3,12 +3,15 @@ spring:
     active: dev
   #
   kafka:
-    bootstrap-servers: bcdev2.bitcubic.com:9092  # Kafka?????
+    bootstrap-servers: bcdev2.bitcubic.com:9092
     consumer:
       group-id: test-group  # ????ID
-      auto-offset-reset: earliest  # ??????????
+      auto-offset-reset: latest  # 从最新偏移量开始
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      enable-auto-commit: false  # ??????offset
+      enable-auto-commit: false   # 关闭自动提交
+      properties:
+        max.poll.records: 1                # 每次只拉取1条消息
     listener:
-      ack-mode: manual_immediate  # ??????
+      ack-mode: manual_immediate           # 手动立即提交
+      type: single                         # 单条消息消费模式
